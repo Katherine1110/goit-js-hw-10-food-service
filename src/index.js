@@ -10,10 +10,6 @@ const cardsMarkup = menuCard(menuData);
 
 menu.insertAdjacentHTML("beforeend", cardsMarkup);
 
-function createCardsMarkup(menuData) {
-  return menuCard(menuData);
-}
-
 const Theme = {
   LIGHT: "light-theme",
   DARK: "dark-theme",
@@ -22,11 +18,11 @@ const Theme = {
 const toggle = document.querySelector("#theme-switch-toggle");
 
 toggle.addEventListener("change", themeSwitch);
-toggle.addEventListener("change", setTheme);
 document.addEventListener("DOMContentLoaded", saveThemeValue);
 
 function themeSwitch() {
   const toggleValue = toggle.checked;
+  localStorage.setItem("theme", toggleValue ? Theme.DARK : Theme.LIGHT);
 
   if (toggleValue) {
     document.body.classList.add(Theme.DARK);
@@ -37,23 +33,16 @@ function themeSwitch() {
   }
 }
 
-function setTheme() {
-  const toggleValue = toggle.checked;
-  //   console.log(toggleValue);
-  if (toggleValue) {
-    localStorage.setItem("theme", Theme.DARK);
-  } else {
-    localStorage.setItem("theme", Theme.LIGHT);
-  }
-}
-
 function saveThemeValue() {
   const currentTheme = localStorage.getItem("theme");
   console.log(currentTheme);
   if (currentTheme === Theme.DARK) {
     document.body.classList.add(Theme.DARK);
     document.body.classList.remove(Theme.LIGHT);
-
     toggle.checked = true;
+  } else {
+    document.body.classList.add(Theme.LIGHT);
+    document.body.classList.remove(Theme.DARK);
+    toggle.checked = false;
   }
 }
